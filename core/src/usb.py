@@ -102,4 +102,4 @@ if __debug__ and ENABLE_IFACE_DEBUG:
 if not utils.BITCOIN_ONLY and ENABLE_IFACE_WEBAUTHN:
     bus.add(iface_webauthn)
 if __debug__ and ENABLE_IFACE_VCP:
-        bus.add(iface_vcp)
+    bus.add(iface_vcp)
