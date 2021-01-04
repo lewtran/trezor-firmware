@@ -25,7 +25,7 @@ iface_wire = io.WebUSB(
     ep_out=0x01 + id_wire,
 )
 
-if ENABLE_IFACE_DEBUG:
+if __debug__ and ENABLE_IFACE_DEBUG:
     # interface used for debug messages with trezor wire protocol
     id_debug = next(_iface_iter)
     iface_debug = io.WebUSB(
@@ -63,7 +63,7 @@ if ENABLE_IFACE_WEBAUTHN:
         # fmt: on
     )
 
-if ENABLE_IFACE_VCP:
+if __debug__ and ENABLE_IFACE_VCP:
     # interface used for cdc/vcp console emulation (debug messages)
     id_vcp = next(_iface_iter)
     id_vcp_data = next(_iface_iter)
@@ -86,9 +86,9 @@ bus = io.USB(
     usb21_landing=False,
 )
 bus.add(iface_wire)
-if ENABLE_IFACE_DEBUG:
+if __debug__ and ENABLE_IFACE_DEBUG:
     bus.add(iface_debug)
 if ENABLE_IFACE_WEBAUTHN:
     bus.add(iface_webauthn)
-if ENABLE_IFACE_VCP:
+if __debug__ and ENABLE_IFACE_VCP:
         bus.add(iface_vcp)
