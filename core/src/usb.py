@@ -25,6 +25,17 @@ iface_wire = io.WebUSB(
     ep_out=0x01 + id_wire,
 )
 
+# XXXXXXXXXXXXXXXXXXX
+#
+# We want the following branches present only in their respective firmwares. To achieve
+# that, we are taking advantage of the upy compiler static optimization: when an
+# if-expression statically evaluates to False, the branch is excluded from the bytecode.
+# This works magically for the __debug__ builtin, and `utils.BITCOIN_ONLY` is replaced
+# by a literal True/False by us in the build step.
+#
+# Therefore, each of the following needs to include the respective static expression
+# so that it can be correctly excluded from the resulting build.
+
 if __debug__ and ENABLE_IFACE_DEBUG:
     # interface used for debug messages with trezor wire protocol
     id_debug = next(_iface_iter)
@@ -34,7 +45,7 @@ if __debug__ and ENABLE_IFACE_DEBUG:
         ep_out=0x01 + id_debug,
     )
 
-if ENABLE_IFACE_WEBAUTHN:
+if not utils.BITCOIN_ONLY and ENABLE_IFACE_WEBAUTHN:
     # interface used for FIDO/U2F and FIDO2/WebAuthn HID transport
     id_webauthn = next(_iface_iter)
     iface_webauthn = io.HID(
@@ -88,7 +99,7 @@ bus = io.USB(
 bus.add(iface_wire)
 if __debug__ and ENABLE_IFACE_DEBUG:
     bus.add(iface_debug)
-if ENABLE_IFACE_WEBAUTHN:
+if not utils.BITCOIN_ONLY and ENABLE_IFACE_WEBAUTHN:
     bus.add(iface_webauthn)
 if __debug__ and ENABLE_IFACE_VCP:
         bus.add(iface_vcp)
