@@ -69,22 +69,6 @@ async def show_pubkey(ctx: wire.Context, pubkey: bytes) -> None:
     await require_confirm(ctx, text, ButtonRequestType.PublicKey)
 
 
-async def show_xpub(ctx: wire.Context, xpub: str, desc: str, cancel: str) -> bool:
-    pages: List[ui.Component] = []
-    for lines in chunks(list(chunks(xpub, 16)), 5):
-        text = Text(desc, ui.ICON_RECEIVE, ui.GREEN)
-        text.mono(*lines)
-        pages.append(text)
-
-    return await confirm(
-        ctx,
-        Paginated(pages),
-        code=ButtonRequestType.PublicKey,
-        cancel=cancel,
-        cancel_style=ButtonDefault,
-    )
-
-
 def split_address(address: str) -> Iterator[str]:
     return chunks(address, 17)
 
