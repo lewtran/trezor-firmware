@@ -1,9 +1,12 @@
+from ubinascii import hexlify
+
 from trezor import wire
 from trezor.messages import InputScriptType
 from trezor.messages.HDNodeType import HDNodeType
 from trezor.messages.PublicKey import PublicKey
+from trezor.ui.layouts import show_pubkey
 
-from apps.common import coins, layout, paths
+from apps.common import coins, paths
 from apps.common.keychain import get_keychain
 
 if False:
@@ -52,6 +55,9 @@ async def get_public_key(ctx: wire.Context, msg: GetPublicKey) -> PublicKey:
     )
 
     if msg.show_display:
-        await layout.show_pubkey(ctx, pubkey)
+        await show_pubkey(
+            ctx,
+            hexlify(pubkey).decode(),
+        )
 
     return PublicKey(node=node_type, xpub=node_xpub)

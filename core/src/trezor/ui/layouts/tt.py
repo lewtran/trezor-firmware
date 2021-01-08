@@ -32,6 +32,7 @@ __all__ = (
     "confirm_backup",
     "confirm_path_warning",
     "show_address",
+    "show_pubkey",
     "show_success",
     "show_warning",
     "confirm_output",
@@ -246,6 +247,16 @@ async def show_address(
                     is CONFIRMED
                 ):
                     return
+
+
+# FIXME: this is basically same as confirm_hex
+# TODO: pagination for long keys
+def show_pubkey(
+    ctx: wire.Context, pubkey: str, title: str = "Confirm public key"
+) -> LayoutType:
+    text = Text(title, ui.ICON_RECEIVE, ui.GREEN)
+    text.mono(*_hex_lines(pubkey))
+    return interact(ctx, Confirm(text), "show_pubkey", ButtonRequestType.PublicKey)
 
 
 def show_warning(
