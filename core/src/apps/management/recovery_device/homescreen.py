@@ -147,7 +147,9 @@ async def _finish_recovery(
     storage.recovery.end_progress()
 
     await require(
-        show_success(ctx, "success_recovery", "You have successfully recovered your wallet.")
+        show_success(
+            ctx, "success_recovery", "You have successfully recovered your wallet."
+        )
     )
     return Success(message="Device recovered")
 
